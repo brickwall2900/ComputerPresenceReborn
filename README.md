@@ -4,7 +4,8 @@ show your computer status as a
 
 > [!WARNING]
 > Users of this application need to abide by Discord's
-> [Term of Service](https://discord.com/terms).
+> [Term of Service](https://discord.com/terms) and the
+> [Community Guidelines](https://discord.com/guidelines).
 > Failure to follow may result in account termination. Use responsibly!
 > 
 > This application isn't sponsored nor supported by Discord!
