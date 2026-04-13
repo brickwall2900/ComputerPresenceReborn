@@ -73,7 +73,7 @@ public class ComputerPresence {
 
     private static final Path FIRST_RUN_FILE = Path.of("firstrun");
 
-    private static long botId;
+    private static long appId;
     private static Path presenceFile;
 
     private static CreateParams createParams;
@@ -94,8 +94,8 @@ public class ComputerPresence {
     private static int tickRate;
 
     public static class CliArguments {
-        @Parameter(names = {"-id", "--bot-id"}, description = "Discord Application/Client Bot ID")
-        private Long botId;
+        @Parameter(names = {"-id", "--bot-id"}, description = "Discord Application/Client ID")
+        private Long appId;
 
         @Parameter(names = {"-file", "--presence-file"}, description = "ComputerPresence Lua Presence Script")
         private String presenceFile;
@@ -118,14 +118,8 @@ public class ComputerPresence {
     }
 
     private static void applyCommandLineArguments(CliArguments cArgs) {
-        if (cArgs.botId != null) {
-            botId = cArgs.botId;
-        } else {
-            botId = Long.parseLong(System.getProperty("discord.botId", "-1"));
-            if (botId == -1) {
-                throw new IllegalArgumentException(BUNDLE.getString("app.error.noBotId"));
-            }
-        }
+        appId = Objects.requireNonNullElseGet(cArgs.appId,
+                () -> Long.parseLong(System.getProperty("discord.appId", "1261218961366843492")));
 
         if (cArgs.presenceFile != null) {
             presenceFile = Path.of(cArgs.presenceFile);
@@ -367,7 +361,7 @@ public class ComputerPresence {
     private static void initDiscord() {
         LOGGER.info("Connecting to Discord instance");
         createParams = new CreateParams();
-        createParams.setClientID(botId);
+        createParams.setClientID(appId);
         createParams.setFlags(CreateParams.getDefaultFlags());
 
         int maxTries = 30;
