@@ -223,7 +223,7 @@ public class ComputerPresence {
             LOGGER.info("Start ticking!");
 
             tickFuture = executor.scheduleWithFixedDelay(ComputerPresence::tick,
-                    3,
+                    3000,
                     tickRate,
                     TimeUnit.MILLISECONDS);
             if (!uniqueInstance.isLocked()) {
