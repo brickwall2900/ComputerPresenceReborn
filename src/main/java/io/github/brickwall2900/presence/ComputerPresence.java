@@ -328,7 +328,8 @@ public class ComputerPresence {
 
         TrayMenu menu = provider.createMenu();
         TrayCheckboxMenuItem enabledItem = provider.createCheckboxMenuItem(BUNDLE.getString("app.popup.enabled"));
-        TrayMenuItem reloadItem = provider.createMenuItem(BUNDLE.getString("app.popup.reload"));
+        TrayMenuItem reloadItem = provider.createMenuItem(BUNDLE.getString("app.popup.script.reload"));
+        TrayMenuItem editItem = provider.createMenuItem(BUNDLE.getString("app.popup.script.edit"));
         TrayMenuItem exitItem = provider.createMenuItem(BUNDLE.getString("app.popup.exit"));
         TrayMenuItem licensesItem = provider.createMenuItem(BUNDLE.getString("app.popup.licenses"));
 
@@ -346,13 +347,22 @@ public class ComputerPresence {
             }
         });
         reloadItem.addCallback(() -> executor.submit(ComputerPresence::reloadScript));
+        editItem.addCallback(() -> SwingUtilities.invokeLater(() -> {
+            try {
+                Desktop.getDesktop().edit(presenceFile.toFile());
+            } catch (IOException e) {
+                notifyException(e, BUNDLE.getString("app.error.edit"), false);
+            }
+        }));
         exitItem.addCallback(() -> new Thread(ComputerPresence::shutdown, "Shutdown Thread").start());
         licensesItem.addCallback(ComputerPresence::showLicenses);
 
         menu.add(enabledItem);
-        menu.add(reloadItem);
-        menu.add(exitItem);
         menu.addSeparator();
+        menu.add(reloadItem);
+        menu.add(editItem);
+        menu.addSeparator();
+        menu.add(exitItem);
         menu.add(licensesItem);
 
         trayIcon.setTrayMenu(menu);
