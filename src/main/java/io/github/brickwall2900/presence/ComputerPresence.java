@@ -91,7 +91,7 @@ public class ComputerPresence {
             (runnable) -> new Thread(runnable, "ComputerPresenceThread"));
 
     private static ScheduledFuture<?> tickFuture, lockingFuture;
-    private static int tickRate;
+    private static int tickRate = 3000;
 
     public static class CliArguments {
         @Parameter(names = {"-id", "--bot-id"}, description = "Discord Application/Client ID")
